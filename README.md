@@ -25,6 +25,9 @@
 
 本项目已配置为可以轻松部署到Cloudflare Pages。详细的部署说明请参考[DEPLOYMENT.md](./DEPLOYMENT.md)。
 
+### 部署问题解决
+如果部署后页面没有显示，请参考DEPLOYMENT_FIX.md中的解决方案。主要原因是Cloudflare Pages需要正确配置构建设置。
+
 ### 快速部署到Cloudflare Pages
 
 1. 将代码推送到Git仓库
