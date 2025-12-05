@@ -200,9 +200,79 @@ function App() {
     return <div className="loading-container"><Spin size="large" /></div>
   }
 
+  // 检查URL路径，如果包含404或特定模式，则显示404页面
+  const is404Page = window.location.pathname.includes('404') || 
+                   window.location.pathname === '/not-found' ||
+                   window.location.search.includes('404=true');
+
+  if (is404Page) {
+    return (
+      <div className="container">
+        <Title level={1}>404 - 页面未找到</Title>
+        <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <Card>
+              <img src={imageUrl} alt="Random" className="random-image" />
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card title="当前天气">
+              {weather && (
+                <>
+                  <Text>{weather.location.name}, {weather.location.country}</Text>
+                  <br />
+                  <Text>温度: {weather.current.temp_c}°C</Text>
+                  <br />
+                  <Text>天气: {weather.current.condition.text}</Text>
+                  <br />
+                  <Text type="secondary" style={{ fontSize: '12px' }}>
+                    {locationPermission === 'granted' ? '📍 基于您的位置' : '📍 默认位置'}
+                  </Text>
+                </>
+              )}
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card title="今日新闻">
+              {news && (
+                <>
+                  <Text strong>{news.title}</Text>
+                  <br />
+                  <Text type="secondary">{dayjs(news.publishedAt).format('YYYY-MM-DD HH:mm')}</Text>
+                </>
+              )}
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card title="每日名言">
+              {quote && (
+                <>
+                  <Text italic>"{quote.content}"</Text>
+                  <br />
+                  <Text type="secondary">— {quote.author}</Text>
+                </>
+              )}
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card title="USD/CNY 汇率">
+              {exchangeRate && (
+                <>
+                  <Text>1 USD = {exchangeRate} CNY</Text>
+                  <br />
+                  <Text type="secondary">更新时间: {dayjs().format('YYYY-MM-DD HH:mm:ss')}</Text>
+                </>
+              )}
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    )
+  }
+
   return (
     <div className="container">
-      <Title level={1}>404 - 页面未找到</Title>
+      <Title level={1}>欢迎访问</Title>
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <Card>

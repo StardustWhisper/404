@@ -28,6 +28,35 @@
 ### 部署问题解决
 如果部署后页面没有显示，请参考DEPLOYMENT_FIX.md中的解决方案。主要原因是Cloudflare Pages需要正确配置构建设置。
 
+### 解决ERR_SSL_UNRECOGNIZED_NAME_ALERT错误
+当访问部署的应用时出现`ERR_SSL_UNRECOGNIZED_NAME_ALERT`错误，这通常是因为SSL证书配置问题。
+
+**针对 NPM 服务器架构的解决方法：**
+
+根据您的架构（域名托管在 Cloudflare，所有访问转到 NPM 服务器，NPM 服务器上配置通用 SSL 证书），有以下几种解决方案：
+
+1. **方法1：在 NPM 服务器上配置通配符 SSL 证书（推荐）**
+   - 在 NPM 服务器上配置通配符 SSL 证书（*.yourdomain.com）
+   - 在 Cloudflare DNS 中添加通配符记录
+   - 在 NPM 服务器中配置默认站点处理未知子域名
+
+2. **方法2：使用 Cloudflare Workers**
+   - 创建 Worker 处理所有请求并转发到 NPM 服务器
+   - 将未知子域名重定向到 404 页面
+
+3. **方法3：在 Cloudflare 中配置 Page Rules**
+   - 为未知子域名创建重定向规则
+   - 为已知子域名创建例外规则
+
+4. **方法4：NPM 服务器配置默认虚拟主机**
+   - 在 Web 服务器配置中设置默认虚拟主机
+   - 将未知子域名的请求重定向到 404 页面
+
+**详细配置步骤和代码示例请参考：**
+
+- [SUBDOMAIN_404_FIX.md](./SUBDOMAIN_404_FIX.md) - 包含针对 NPM 服务器架构的详细解决方案
+- [nginx-example.conf](./nginx-example.conf) - Nginx 配置示例，展示如何配置通配符SSL证书和默认虚拟主机
+
 ### 快速部署到Cloudflare Pages
 
 1. 将代码推送到Git仓库
