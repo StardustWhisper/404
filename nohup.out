@@ -1,0 +1,71 @@
+Traceback (most recent call last):
+  File "/Users/terry/miniconda3/lib/python3.12/zoneinfo/_common.py", line 12, in load_tzdata
+    return resources.files(package_name).joinpath(resource_name).open("rb")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/terry/miniconda3/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/terry/miniconda3/lib/python3.12/site-packages/tzdata/zoneinfo/CST'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/terry/miniconda3/lib/python3.12/site-packages/mcp_server_time/__main__.py", line 3, in <module>
+    main()
+  File "/Users/terry/miniconda3/lib/python3.12/site-packages/mcp_server_time/__init__.py", line 15, in main
+    asyncio.run(serve(args.local_timezone))
+  File "/Users/terry/miniconda3/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/terry/miniconda3/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/terry/miniconda3/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/terry/miniconda3/lib/python3.12/site-packages/mcp_server_time/server.py", line 119, in serve
+    local_tz = str(get_local_tz(local_timezone))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/terry/miniconda3/lib/python3.12/site-packages/mcp_server_time/server.py", line 45, in get_local_tz
+    return ZoneInfo(str(tzinfo))
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/terry/miniconda3/lib/python3.12/zoneinfo/_common.py", line 24, in load_tzdata
+    raise ZoneInfoNotFoundError(f"No time zone found with key {key}")
+zoneinfo._common.ZoneInfoNotFoundError: 'No time zone found with key CST'
+Traceback (most recent call last):
+  File "/Users/terry/miniconda3/lib/python3.12/zoneinfo/_common.py", line 12, in load_tzdata
+    return resources.files(package_name).joinpath(resource_name).open("rb")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/terry/miniconda3/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/terry/.cache/uv/archive-v0/8KB-RwU9M6KQzKR1lPzl9/lib/python3.12/site-packages/tzdata/zoneinfo/CST'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/terry/.cache/uv/archive-v0/8KB-RwU9M6KQzKR1lPzl9/bin/mcp-server-time", line 12, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/terry/.cache/uv/archive-v0/8KB-RwU9M6KQzKR1lPzl9/lib/python3.12/site-packages/mcp_server_time/__init__.py", line 15, in main
+    asyncio.run(serve(args.local_timezone))
+  File "/Users/terry/miniconda3/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/terry/miniconda3/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/terry/miniconda3/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/terry/.cache/uv/archive-v0/8KB-RwU9M6KQzKR1lPzl9/lib/python3.12/site-packages/mcp_server_time/server.py", line 119, in serve
+    local_tz = str(get_local_tz(local_timezone))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/terry/.cache/uv/archive-v0/8KB-RwU9M6KQzKR1lPzl9/lib/python3.12/site-packages/mcp_server_time/server.py", line 45, in get_local_tz
+    return ZoneInfo(str(tzinfo))
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/terry/miniconda3/lib/python3.12/zoneinfo/_common.py", line 24, in load_tzdata
+    raise ZoneInfoNotFoundError(f"No time zone found with key {key}")
+zoneinfo._common.ZoneInfoNotFoundError: 'No time zone found with key CST'
