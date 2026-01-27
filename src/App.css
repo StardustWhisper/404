@@ -1,0 +1,307 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  /* 清亮明快的配色方案 - Light Mode */
+  --bg-primary: #F8FAFC;       /* Slate 50 - 极淡的灰白色背景 */
+  --bg-card: #FFFFFF;          /* 纯白卡片 */
+  --text-primary: #1E293B;     /* Slate 800 - 深色主标题 */
+  --text-secondary: #64748B;   /* Slate 500 - 柔和的次要文字 */
+  --accent: #0EA5E9;           /* Sky 500 - 清新的天蓝色 */
+  --accent-light: #E0F2FE;     /* Sky 100 - 淡蓝背景 */
+  --border-color: #E2E8F0;     /* Slate 200 - 极淡的边框 */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  min-height: 100vh;
+}
+
+/* 头部区域 */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.brand-area {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.error-code {
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #0EA5E9 0%, #6366F1 100%); /* 蓝紫渐变 */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.error-desc {
+  border-left: 2px solid var(--border-color);
+  padding-left: 1.5rem;
+}
+
+.error-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.error-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* 按钮样式 */
+.btn-primary {
+  background: var(--text-primary);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px; /* Pill shape */
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  background: #000;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* 卡片通用样式 */
+.fresh-card {
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 1.5rem;
+  height: 100%;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.fresh-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--accent-light);
+}
+
+.card-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.fresh-card:hover .card-icon-wrapper {
+  background: var(--accent);
+  color: #fff;
+}
+
+.card-title {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* 天气卡片 */
+.weather-temp {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+  margin: 0.5rem 0;
+}
+
+.weather-meta {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.meta-value {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* 图片卡片 */
+.visual-card {
+  padding: 0;
+  border: none;
+}
+
+.visual-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  transition: transform 0.5s ease;
+}
+
+.visual-card:hover .visual-img {
+  transform: scale(1.03);
+}
+
+.visual-badge {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+  z-index: 10;
+}
+
+/* 名言卡片 */
+.quote-text {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.quote-author {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.quote-author::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--accent);
+}
+
+/* 新闻列表 */
+.news-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.news-item:last-child {
+  border-bottom: none;
+}
+
+.news-link {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  line-height: 1.4;
+  display: block;
+  margin-bottom: 0.5rem;
+  transition: color 0.2s;
+}
+
+.news-link:hover {
+  color: var(--accent);
+}
+
+.news-source {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  display: inline-block;
+  background: var(--bg-primary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* 加载动画 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1.5rem;
+  }
+  
+  .header-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .brand-area {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .error-desc {
+    border-left: none;
+    padding-left: 0;
+    margin-left: 0.5rem; /* 稍微对其一点 */
+  }
+}
