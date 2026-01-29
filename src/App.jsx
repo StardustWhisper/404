@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react'
-import { Row, Col, Spin, ConfigProvider, theme, Button } from 'antd'
-import { 
-  CloudOutlined, 
-  PictureOutlined, 
-  ReadOutlined, 
-  HomeOutlined, 
-  ReloadOutlined, 
+import { Row, Col, Spin, ConfigProvider, Button } from 'antd'
+import {
+  CloudOutlined,
+  PictureOutlined,
+  ReadOutlined,
+  HomeOutlined,
+  ReloadOutlined,
   WarningOutlined,
   CodeOutlined,
   ThunderboltOutlined,
-  GlobalOutlined
+  SunOutlined,
+  MoonOutlined
 } from '@ant-design/icons'
 import axios from 'axios'
 import dayjs from 'dayjs'
@@ -44,6 +45,10 @@ const MOCK_DATA = {
 
 function App() {
   const [loading, setLoading] = useState(true)
+  const [theme, setTheme] = useState(() => {
+    // Load theme from localStorage or default to light
+    return localStorage.getItem('theme') || 'light'
+  })
   const [data, setData] = useState({
     imageUrl: '',
     weather: null,
@@ -55,57 +60,88 @@ function App() {
     setLoading(true)
     // Initialize with mock data as fallback
     let newData = { ...MOCK_DATA, imageUrl: MOCK_DATA.image }
-    
-    // Try to fetch Image
-    try {
-      if (!'YOUR_UNSPLASH_API_KEY'.includes('YOUR_')) {
-          const imgRes = await axios.get('https://api.unsplash.com/photos/random?client_id=YOUR_UNSPLASH_API_KEY&orientation=landscape', { timeout: 2000 })
-          newData.imageUrl = imgRes.data.urls.regular
-      }
-    } catch (e) {
+
+    // Parallel API requests using Promise.allSettled for better performance
+    const unsplashKey = import.meta.env.VITE_UNSPLASH_API_KEY || ''
+    const weatherKey = import.meta.env.VITE_WEATHER_API_KEY || ''
+    const newsKey = import.meta.env.VITE_NEWS_API_KEY || ''
+
+    const results = await Promise.allSettled([
+      // Fetch Image
+      (async () => {
+        if (unsplashKey && !unsplashKey.includes('YOUR_')) {
+          const imgRes = await axios.get(`https://api.unsplash.com/photos/random?client_id=${unsplashKey}&orientation=landscape&w=1200&h=800`, { timeout: 2000 })
+          return imgRes.data.urls.regular
+        }
+        return null
+      })(),
+      // Fetch Weather
+      (async () => {
+        if (weatherKey && !weatherKey.includes('YOUR_')) {
+          const weatherRes = await axios.get(`https://api.weatherapi.com/v1/current.json?key=${weatherKey}&q=auto:ip`, { timeout: 2000 })
+          return weatherRes.data
+        }
+        return null
+      })(),
+      // Fetch News
+      (async () => {
+        if (newsKey && !newsKey.includes('YOUR_')) {
+          const newsRes = await axios.get(`https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=${newsKey}`, { timeout: 2000 })
+          if (newsRes.data.articles && newsRes.data.articles.length > 0) {
+            return newsRes.data.articles[0]
+          }
+        }
+        return null
+      })(),
+      // Fetch Quote (no API key needed)
+      (async () => {
+        const quoteRes = await axios.get('https://api.quotable.io/random', { timeout: 2000 })
+        return quoteRes.data
+      })()
+    ])
+
+    // Process results
+    if (results[0].status === 'fulfilled' && results[0].value) {
+      newData.imageUrl = results[0].value
+    } else {
       console.log('Using mock image')
     }
 
-    // Try to fetch Weather
-    try {
-      if (!'YOUR_WEATHER_API_KEY'.includes('YOUR_')) {
-          const weatherRes = await axios.get('https://api.weatherapi.com/v1/current.json?key=YOUR_WEATHER_API_KEY&q=auto:ip', { timeout: 2000 })
-          newData.weather = weatherRes.data
-      }
-    } catch (e) {
+    if (results[1].status === 'fulfilled' && results[1].value) {
+      newData.weather = results[1].value
+    } else {
       console.log('Using mock weather')
     }
 
-    // Try to fetch News
-    try {
-      if (!'YOUR_NEWS_API_KEY'.includes('YOUR_')) {
-          const newsRes = await axios.get('https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=YOUR_NEWS_API_KEY', { timeout: 2000 })
-          if (newsRes.data.articles && newsRes.data.articles.length > 0) {
-            newData.news = newsRes.data.articles[0]
-          }
-      }
-    } catch (e) {
+    if (results[2].status === 'fulfilled' && results[2].value) {
+      newData.news = results[2].value
+    } else {
       console.log('Using mock news')
     }
 
-    // Try to fetch Quote
-    try {
-      const quoteRes = await axios.get('https://api.quotable.io/random', { timeout: 2000 })
-      newData.quote = quoteRes.data
-    } catch (e) {
-       console.log('Using mock quote')
+    if (results[3].status === 'fulfilled' && results[3].value) {
+      newData.quote = results[3].value
+    } else {
+      console.log('Using mock quote')
     }
 
-    // Simulate a small delay for the loading animation effect
-    setTimeout(() => {
-        setData(newData)
-        setLoading(false)
-    }, 1000)
+    setData(newData)
+    setLoading(false)
   }
 
   useEffect(() => {
     fetchData()
   }, [])
+
+  // Theme management
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light')
+  }
 
   const handleGoHome = () => {
     window.location.href = '/'
@@ -114,7 +150,6 @@ function App() {
   return (
     <ConfigProvider
       theme={{
-        algorithm: theme.defaultAlgorithm,
         token: {
           colorPrimary: '#0EA5E9',
           fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -137,7 +172,10 @@ function App() {
                   <div className="error-subtitle">The requested resource is unavailable.</div>
                 </div>
               </div>
-              <div>
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                <button className="btn-icon" onClick={toggleTheme} aria-label="Toggle theme">
+                  {theme === 'light' ? <MoonOutlined /> : <SunOutlined />}
+                </button>
                 <button className="btn-primary" onClick={handleGoHome}>
                   <HomeOutlined /> Back to Home
                 </button>
@@ -146,7 +184,7 @@ function App() {
 
             <Row gutter={[24, 24]} align="stretch">
               {/* Left Col: Weather & Quote */}
-              <Col xs={24} lg={6} style={{ display: 'flex', flexDirection: 'column' }}>
+              <Col xs={24} sm={24} md={8} lg={6} xl={6} style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', flex: 1 }}>
                   {/* Weather Card */}
                   <div className="fresh-card">
@@ -196,18 +234,18 @@ function App() {
               </Col>
 
               {/* Middle Col: Image (Visual Feed) */}
-              <Col xs={24} lg={12} style={{ display: 'flex' }}>
+              <Col xs={24} sm={24} md={16} lg={12} xl={12} style={{ display: 'flex' }}>
                 <div className="fresh-card visual-card" style={{ flex: 1, position: 'relative' }}>
                    <div className="visual-badge">
                       <PictureOutlined style={{ marginRight: '8px' }} />
                       Visual Feed
                    </div>
-                   <img src={data.imageUrl} alt="Visual Feed" className="visual-img" />
+                   <img src={data.imageUrl} alt="Visual Feed" className="visual-img" loading="lazy" fetchPriority="low" />
                 </div>
               </Col>
 
               {/* Right Col: News & Actions */}
-              <Col xs={24} lg={6} style={{ display: 'flex', flexDirection: 'column' }}>
+              <Col xs={24} sm={24} md={24} lg={6} xl={6} style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', flex: 1 }}>
                   {/* News Card */}
                   <div className="fresh-card" style={{ flex: 1 }}>

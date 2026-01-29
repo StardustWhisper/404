@@ -12,6 +12,22 @@
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-dark: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+/* Dark Mode - 深色主题 */
+[data-theme="dark"] {
+  --bg-primary: #0F172A;       /* Slate 900 - 深色背景 */
+  --bg-card: #1E293B;          /* Slate 800 - 深色卡片 */
+  --text-primary: #F1F5F9;     /* Slate 100 - 浅色主标题 */
+  --text-secondary: #94A3B8;   /* Slate 400 - 柔和的次要文字 */
+  --accent: #38BDF8;           /* Sky 400 - 明亮的天蓝色 */
+  --accent-light: #0C4A6E;     /* Sky 900 - 深蓝背景 */
+  --border-color: #334155;     /* Slate 700 - 边框 */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  --shadow-dark: 0 1px 2px 0 rgb(0 0 0 / 0.3);
 }
 
 body {
@@ -91,6 +107,34 @@ body {
 
 .btn-primary:hover {
   background: #000;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* 主题切换按钮 */
+.btn-icon {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem;
+  border-radius: 9999px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-icon:hover {
+  background: var(--accent);
+  color: #fff;
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -198,7 +242,8 @@ body {
   position: absolute;
   top: 1.5rem;
   left: 1.5rem;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   backdrop-filter: blur(4px);
   padding: 0.5rem 1rem;
   border-radius: 9999px;
@@ -282,26 +327,154 @@ body {
 }
 
 /* 响应式调整 */
-@media (max-width: 768px) {
+/* Extra Large screens (1400px+) */
+@media (min-width: 1400px) {
   .dashboard-container {
-    padding: 1.5rem;
+    max-width: 1400px;
   }
-  
+
+  .error-code {
+    font-size: 4rem;
+  }
+}
+
+/* Large tablets and small laptops (992px - 1199px) */
+@media (max-width: 1199px) and (min-width: 992px) {
+  .dashboard-container {
+    padding: 2.5rem 2rem;
+  }
+
+  .error-code {
+    font-size: 3rem;
+  }
+
+  .weather-temp {
+    font-size: 3rem;
+  }
+}
+
+/* Tablets (768px - 991px) */
+@media (max-width: 991px) and (min-width: 768px) {
+  .dashboard-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .header-section {
+    margin-bottom: 2rem;
+  }
+
+  .error-code {
+    font-size: 2.75rem;
+  }
+
+  .weather-temp {
+    font-size: 2.75rem;
+  }
+
+  .quote-text {
+    font-size: 1.1rem;
+  }
+}
+
+/* Mobile landscape and small tablets (576px - 767px) */
+@media (max-width: 767px) and (min-width: 576px) {
+  .dashboard-container {
+    padding: 1.75rem;
+  }
+
+  .header-section {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .brand-area {
+    gap: 1rem;
+  }
+
+  .error-code {
+    font-size: 2.5rem;
+  }
+
+  .weather-temp {
+    font-size: 2.5rem;
+  }
+}
+
+/* Mobile portrait (< 576px) */
+@media (max-width: 575px) {
+  .dashboard-container {
+    padding: 1.25rem;
+  }
+
   .header-section {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1.5rem;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
   }
-  
+
   .brand-area {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 0.75rem;
   }
-  
+
   .error-desc {
     border-left: none;
     padding-left: 0;
-    margin-left: 0.5rem; /* 稍微对其一点 */
+    margin-left: 0.25rem;
+  }
+
+  .error-code {
+    font-size: 2.25rem;
+  }
+
+  .error-title {
+    font-size: 1.1rem;
+  }
+
+  .error-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .weather-temp {
+    font-size: 2.25rem;
+  }
+
+  .quote-text {
+    font-size: 1rem;
+  }
+
+  .btn-primary {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  .btn-icon {
+    padding: 0.625rem;
+  }
+}
+
+/* Extra small mobile (< 375px) */
+@media (max-width: 374px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .error-code {
+    font-size: 2rem;
+  }
+
+  .weather-temp {
+    font-size: 2rem;
+  }
+
+  .quote-text {
+    font-size: 0.95rem;
+  }
+
+  .fresh-card {
+    padding: 1.25rem;
   }
 }
